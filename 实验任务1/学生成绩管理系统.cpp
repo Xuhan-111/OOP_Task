@@ -1,7 +1,7 @@
 /*************************************************
-** ÌâÄ¿ : Student Information Management System
-** ×÷Õß : Xushihao
-** ´´½¨ : 2020-9-22 / 19:37
+** é¢˜ç›® : Student Information Management System
+** ä½œè€… : Xushihao
+** åˆ›å»º : 2020-9-22 / 19:37
 /**************************************************/
 
 #include <iostream>
@@ -28,7 +28,7 @@ struct node
 	double zong;
 };
 node student[N];
-int n; 
+int n;
 double sum = 0, sum1 = 0, sum2 = 0;
 ifstream input("data.txt");
 bool cmp(node a, node b)
@@ -37,6 +37,7 @@ bool cmp(node a, node b)
 }
 void in(int n)
 {
+	sum = 0;
 	for (int i = 1; i <= n; ++i)
 	{
 		input >> student[i].xuehao >> student[i].name >> student[i].pingshi >> student[i].shiyan >> student[i].qimo;
@@ -46,13 +47,14 @@ void in(int n)
 }
 void output(int i)
 {
-	printf("ÅÅÃû: %d Ñ§ºÅ:", i);
-	cout << student[i].xuehao << " ĞÕÃû:" << student[i].name;
-	printf(" Æ½Ê±³É¼¨£º%d ÊµÑé³É¼¨£º%d ÆÚÄ©³É¼¨£º%d ×Ü³É¼¨£º%.2lf\n", student[i].pingshi, student[i].shiyan, student[i].qimo, student[i].zong);
+	printf("æ’å: %d å­¦å·:", i);
+	cout << student[i].xuehao << " å§“å:" << student[i].name;
+	printf(" å¹³æ—¶æˆç»©ï¼š%d å®éªŒæˆç»©ï¼š%d æœŸæœ«æˆç»©ï¼š%d æ€»æˆç»©ï¼š%.2lf\n", student[i].pingshi, student[i].shiyan, student[i].qimo, student[i].zong);
 }
 void getfc()
 {
 	sum1 = sum / n;
+	sum2 = 0;
 	for (int i = 1; i <= n; ++i)
 	{
 		double x = student[i].zong - sum1;
@@ -76,7 +78,7 @@ void search(string s)
 	if (f)
 		output(i);
 	else
-		cout << "Î´ÕÒµ½Ñ§ºÅÎª " << s << " µÄÑ§Éú" << endl;
+		cout << "æœªæ‰¾åˆ°å­¦å·ä¸º " << s << " çš„å­¦ç”Ÿ" << endl;
 }
 void paixu()
 {
@@ -85,30 +87,42 @@ void paixu()
 void insert()
 {
 	node tmp;
-	bool f=1;
+	bool f = 1;
 	cin >> tmp.xuehao >> tmp.name >> tmp.pingshi >> tmp.shiyan >> tmp.qimo;
 	tmp.zong = 0.2 * tmp.pingshi + 0.2 * tmp.shiyan + 0.6 * tmp.qimo;
-	for(int i=1;i<=n;++i)
+	for (int i = 1; i <= n; ++i)
 	{
-		if(student[i].xuehao==tmp.xuehao)
+		if (student[i].xuehao == tmp.xuehao)
 		{
-			f=0;
+			f = 0;
 			break;
 		}
 	}
-	if(f)
+	if (f)
 	{
 		n++;
-		student[n]=tmp;
+		student[n] = tmp;
 		sum += student[n].zong;
 		paixu();
 		getfc();
-		cout<<"ÒÑÌí¼ÓÑ§ºÅÎª "<<tmp.xuehao<<" µÄÑ§Éú"<<endl;
-	} 
+		cout << "å·²æ·»åŠ å­¦å·ä¸º " << tmp.xuehao << " çš„å­¦ç”Ÿ" << endl;
+	}
 	else
 	{
-		cout<<"Ñ§ºÅÎª "<<tmp.xuehao<<" µÄÑ§ÉúÒÑ´æÔÚ"<<endl; 
+		cout << "å­¦å·ä¸º " << tmp.xuehao << " çš„å­¦ç”Ÿå·²å­˜åœ¨" << endl;
 	}
+}
+int tg()
+{
+	int cnt = 0;
+	for (int i = 1; i <= n; ++i)
+	{
+		if (student[i].zong >= sum1)
+		{
+			cnt++;
+		}
+	}
+	return cnt;
 }
 void del(string s)
 {
@@ -124,7 +138,7 @@ void del(string s)
 	}
 	if (f)
 	{
-		sum-=student[i].zong;
+		sum -= student[i].zong;
 		for (; i < n; ++i)
 		{
 			student[i] = student[i + 1];
@@ -132,33 +146,33 @@ void del(string s)
 		n--;
 		paixu();
 		getfc();
-		cout << "ÒÑÉ¾³ıÑ§ºÅÎª " << s << " µÄÑ§ÉúĞÅÏ¢" << endl;
+		cout << "å·²åˆ é™¤å­¦å·ä¸º " << s << " çš„å­¦ç”Ÿä¿¡æ¯" << endl;
 	}
 	else
 	{
-		cout << "Î´ÕÒµ½Ñ§ºÅÎª " << s << " µÄÑ§ÉúĞÅÏ¢£¬Çë¼ì²éÊäÈëÊÇ·ñÕıÈ·" << endl;
+		cout << "æœªæ‰¾åˆ°å­¦å·ä¸º " << s << " çš„å­¦ç”Ÿä¿¡æ¯ï¼Œè¯·æ£€æŸ¥è¾“å…¥æ˜¯å¦æ­£ç¡®" << endl;
 	}
 
 }
 int main()
 {
-//	std::ios::sync_with_stdio(false);
-//	std::cin.tie(0);
+	//	std::ios::sync_with_stdio(false);
+	//	std::cin.tie(0);
 	input >> n;
 	in(n);
 	getfc();
 	paixu();
-	cout << "ÏÖÓĞÑ§Éú³É¼¨Îª:" << endl;
+	cout << "ç°æœ‰å­¦ç”Ÿæˆç»©ä¸º:" << endl;
 	for (int i = 1; i <= n; ++i)
 	{
 		output(i);
 	}
-	cout << "ÊäÈëÊı×Ö1Ìí¼ÓÑ§Éú" << endl;
-	cout << "ÊäÈëÊı×Ö2²éÑ¯Ñ§Éú" << endl;
-	cout << "ÊäÈëÊı×Ö3É¾³ıÑ§Éú" << endl;
-	cout << "ÊäÈëÊı×Ö4´òÓ¡Ñ§ÉúÆ½¾ù³É¼¨Óë·½²î" << endl;
-	cout << "ÊäÈëÊı×Ö5´òÓ¡ËùÓĞÑ§ÉúĞÅÏ¢" << endl;
-	cout << "ÊäÈëÊı×Ö0ÍË³ö" << endl;
+	cout << "è¾“å…¥æ•°å­—1æ·»åŠ å­¦ç”Ÿ" << endl;
+	cout << "è¾“å…¥æ•°å­—2æŸ¥è¯¢å­¦ç”Ÿ" << endl;
+	cout << "è¾“å…¥æ•°å­—3åˆ é™¤å­¦ç”Ÿ" << endl;
+	cout << "è¾“å…¥æ•°å­—4æ‰“å°å­¦ç”Ÿå¹³å‡æˆç»©ä¸æ–¹å·®" << endl;
+	cout << "è¾“å…¥æ•°å­—5æ‰“å°æ‰€æœ‰å­¦ç”Ÿä¿¡æ¯" << endl;
+	cout << "è¾“å…¥æ•°å­—0é€€å‡º" << endl;
 	int x;
 	while (cin >> x)
 	{
@@ -168,12 +182,12 @@ int main()
 		}
 		if (x == 1)
 		{
-			cout << "ÇëÒÀ´ÎÊäÈëÑ§ÉúÑ§ºÅ¡¢ĞÕÃû¡¢Æ½Ê±³É¼¨¡¢ÊµÑé³É¼¨¡¢ÆÚÄ©³É¼¨" << endl;
+			cout << "è¯·ä¾æ¬¡è¾“å…¥å­¦ç”Ÿå­¦å·ã€å§“åã€å¹³æ—¶æˆç»©ã€å®éªŒæˆç»©ã€æœŸæœ«æˆç»©" << endl;
 			insert();
 		}
 		if (x == 2)
 		{
-			cout << "ÇëÊäÈëÒª²éÑ¯µÄÑ§ÉúÑ§ºÅ" << endl;
+			cout << "è¯·è¾“å…¥è¦æŸ¥è¯¢çš„å­¦ç”Ÿå­¦å·" << endl;
 			string ss;
 			cin >> ss;
 			search(ss);
@@ -181,7 +195,7 @@ int main()
 		}
 		if (x == 3)
 		{
-			cout << "ÇëÊäÈëÒªÉ¾³ıµÄÑ§ÉúÑ§ºÅ" << endl;
+			cout << "è¯·è¾“å…¥è¦åˆ é™¤çš„å­¦ç”Ÿå­¦å·" << endl;
 			string ss;
 			cin >> ss;
 			del(ss);
@@ -189,7 +203,17 @@ int main()
 		if (x == 4)
 		{
 			getfc();
-			printf("¸Ã°à¼¶Ñ§ÉúµÄ×Ü³É¼¨¾ùÖµÎª£º%.2lf ±ê×¼·½²îÎª£º%.2lf\n", sum1, sum2);
+			int num = tg();
+			printf("è¯¥ç­çº§å­¦ç”Ÿçš„æ€»æˆç»©å‡å€¼ä¸ºï¼š%.2lf æ ‡å‡†æ–¹å·®ä¸ºï¼š%.2lf\n", sum1, sum2);
+			printf("è¯¥ç­çº§å­¦ç”Ÿæœ‰%däººè¶…è¿‡å¹³å‡åˆ†",num);
+			if (num >= n / 2)
+			{
+				printf("\n");
+			}
+			else
+			{
+				printf("æœªåˆ°è¾¾åŠæ•°\n");
+			}
 		}
 		if (x == 5)
 		{
