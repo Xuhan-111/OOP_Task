@@ -38,53 +38,46 @@ int main()
 {
 	cout << "请输入一个数n代表要输入的边数" << endl;
 	int n;
-	while (cin >> n)
+	cin >> n;
+	double* a = new double[n + 7];//创建a数组，为防止可能的越界，多增加了7个空间。
+	for (int i = 1; i <= n; ++i)//读入n条边
 	{
-		if (n == 0)
-		{
-			return 0;
-		}
-		double* a = new double(n + 7);//创建a数组，为防止可能的越界，多增加了7个空间。
-		for (int i = 1; i <= n; ++i)//读入n条边
-		{
-			cin >> a[i];
-		}
-		sort(a + 1, a + 1 + n, cmp);//使用sort排序，cmp控制sort的排序方式，为从大到小排序
-		for (int i = 1; i <= n - 2; ++i)//for 循环遍历n-2条边
-		{
-			if (a[i] >= a[i + 1] + a[i + 2])
-			{
-				//由于是从大到小排序，直接判断最大边是否大于两小边之和
-				//即可判断这三边能否构成三角形
-				continue;
-			}
-			else//如果可以构成三角形，则三角形一定是周长最大的三角形
-			{
-				ans1[1] = a[i];
-				ans1[2] = a[i + 1];
-				ans1[3] = a[i + 2];
-				break;
-			}
-		}
-		cout << "最大周长：" << ans1[1] + ans1[2] + ans1[3] << " 选择(" << ans1[3] << " " << ans1[2] << " " << ans1[1] << ")" << endl;
-		double res = -1;//用于储存最大的面积，由于要使用max函数，因此初值要尽量小
-		for (int i = 1; i <= n - 2; ++i)
-		{
-			if (check(a[i], a[i + 1], a[i + 2]))//使用check函数判断三角形是否合法
-			{
-				double mianji = solve(a[i], a[i + 1], a[i + 2]);//使用solve函数计算面积
-				if (res < mianji)//记录最大面积对应的三角形三边长度
-				{
-					res = mianji;
-					ans2[1] = a[i];
-					ans2[2] = a[i + 1];
-					ans2[3] = a[i + 2];
-				}
-			}
-		}
-		delete a;//释放a数组的空间
-		cout << "最大面积：" << res << " 选择(" << ans2[3] << " " << ans2[2] << " " << ans2[1] << ")" << endl;
-		cout << "请输入一个数n代表要输入的边数，或输入0退出" << endl;
+		cin >> a[i];
 	}
+	sort(a + 1, a + 1 + n, cmp);//使用sort排序，cmp控制sort的排序方式，为从大到小排序
+	for (int i = 1; i <= n - 2; ++i)//for 循环遍历n-2条边
+	{
+		if (a[i] >= a[i + 1] + a[i + 2])
+		{
+			//由于是从大到小排序，直接判断最大边是否大于两小边之和
+			//即可判断这三边能否构成三角形
+			continue;
+		}
+		else//如果可以构成三角形，则三角形一定是周长最大的三角形
+		{
+			ans1[1] = a[i];
+			ans1[2] = a[i + 1];
+			ans1[3] = a[i + 2];
+			break;
+		}
+		}
+	cout << "最大周长：" << ans1[1] + ans1[2] + ans1[3] << " 选择(" << ans1[3] << " " << ans1[2] << " " << ans1[1] << ")" << endl;
+	double res = -1;//用于储存最大的面积，由于要使用max函数，因此初值要尽量小
+	for (int i = 1; i <= n - 2; ++i)
+	{
+		if (check(a[i], a[i + 1], a[i + 2]))//使用check函数判断三角形是否合法
+		{
+			double mianji = solve(a[i], a[i + 1], a[i + 2]);//使用solve函数计算面积
+			if (res < mianji)//记录最大面积对应的三角形三边长度
+			{
+				res = mianji;
+				ans2[1] = a[i];
+				ans2[2] = a[i + 1];
+				ans2[3] = a[i + 2];
+			}
+		}
+	}
+	delete [] a;//释放a数组的空间
+	cout << "最大面积：" << res << " 选择(" << ans2[3] << " " << ans2[2] << " " << ans2[1] << ")" << endl;
 	return 0;
 }
