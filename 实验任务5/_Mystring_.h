@@ -1,72 +1,151 @@
+#pragma once
 #include "_Mystring_.h"
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
 #include<iostream>
 #include <cstdio>
-#include<algorithm>
 
 using namespace std;
 
-const int N = 1007;
-
-ostream& operator<<(ostream& out, MyString& b)
+class MyString
 {
-	int i;
-	for (i = 0; i < b.my_string_len; ++i)
+private:
+	int my_string_len;
+public:
+	char my_string[1007];
+	MyString()
 	{
-		cout.width(1);
-		cout << b.my_string[i];
+		memset(my_string, '\0', sizeof(my_string));
+		my_string_len = 0;
 	}
-	return out;
-}
+	MyString(const char* b)
+	{
+		int len = strlen(b);
+		for (int i = 0; i < len; ++i)
+		{
+			my_string[i] = b[i];
+		}
+		my_string_len = len;
+	}
+	MyString(const char b)
+	{
+		my_string_len = 1;
+		my_string[0] = b;
+	}
+	int length() const
+	{
+		return my_string_len;
+	}
+	void add(const char* str)
+	{
+		int len = strlen(str);
+		for (int i = 0; i < len; ++i)
+		{
+			my_string[my_string_len++] = str[i];
+		}
+	}
+	void add(const char str)
+	{
+		my_string[my_string_len++] = str;
+	}
+	void add(const MyString& str)
+	{
+		int len = str.length();
+		for (int i = my_string_len, j = 0; j < len; ++j, ++i)
+		{
+			my_string[i] = str.my_string[j];
+		}
+		my_string_len += str.my_string_len;
+	}
+	void posdelete(const int pos)
+	{
+		for (int i = pos; i < my_string_len - 1; ++i)
+		{
+			my_string[i] = my_string[i + 1];
+		}
+		my_string_len--;
+	}
+	int compare(const MyString& sss)
+	{
+		int i = 0;
+		int len = min(sss.length(), my_string_len);
+		while (i < len)
+		{
+			if (sss.my_string[i] < my_string[i])
+			{
+				return -1;
+			}
+			if (sss.my_string[i] > my_string[i])
+			{
+				return 1;
+			}
+			++i;
+		}
+		if (sss.length() < my_string_len)
+		{
+			return -1;
+		}
+		if (sss.length() > my_string_len)
+		{
+			return 1;
+		}
+		if (sss.length() == my_string_len)
+		{
+			return 0;
+		}
+	}
+	int find(const MyString& str)
+	{
+		int len1 = my_string_len;
+		int len2 = str.length();
+		int i = 0, j = 0;
+		while (i < len1 && j < len2)
+		{
+			if (my_string[i] == str.my_string[j])
+			{
+				++i;
+				++j;
+			}
+			else
+			{
+				i = i - j + 1;
+				j = 0;
+			}
+		}
+		if (j > len2)
+		{
+			return i - len2 + 1;
+		}
+		return -1;
 
-void work2()
-{
-	cout << "-----------------作业2-----------------" << endl << endl;
-	char s1[N];
-	char s2[N];
-	cout << "输入字符串a" << endl;
-	cin >> s1;
-	cout << "输入字符串b" << endl;
-	cin >> s2;
-	MyString a(s1);
-	MyString b(s2);
-	cout << "字符串 " << a << " 的长度是" << b.length() << endl;
-	cout << "字符串 " << b << " 的长度是" << b.length() << endl;
-	MyString c('c');
-	cout << "字符串 " << c << " 的长度是" << c.length() << endl;
-	a.add(b);
-	cout << "a,b两串相加:" << a << "长度为" << a.length() << endl;
-	c.add('c');
-	cout << "c串加'c' " << c << endl;
-	a.posdelete(0);
-	cout << "删除a串的第一个字符后:" << a << endl;
-	a.change(0, 'c');
-	cout << "将a串的第一个字符改为c:" << a << endl;
-	int fl = a.compare(b);
-	if (fl > 0)
-	{
-		cout << "a串的字典序大于b" << endl;
 	}
-	else if (fl == 0)
+	bool find(const char b)
 	{
-		cout << "a串的字典序等于b" << endl;
+		for (int i = 0; i < my_string_len; ++i)
+		{
+			if (my_string[i] == b)
+			{
+				return 1;
+			}
+			return 0;
+		}
 	}
-	else
+	void change(int pos, char b)
 	{
-		cout << "a串的字典序小于b" << endl;
+		my_string[pos] = b;
 	}
-	a.reverse();
-	cout << "反转a串";
-	cout << a << endl;
-	int f = a.find(b);
-	if (f != -1)
+	void reverse()
 	{
-		cout << "a串与b串在" << f << "字符处匹配" << endl;
+		for (int i = 0; i < my_string_len / 2; ++i)
+		{
+			char t = my_string[i];
+			my_string[i] = my_string[my_string_len - i - 1];
+			my_string[my_string_len - i - 1] = t;
+		}
 	}
-	else
-	{
-		cout << "b串不是a串的一个子串" << endl;
-	}
-	cout << endl;
-	cout << "-----------------作业2-----------------" << endl;
-}
+	friend ostream& operator<<(ostream&, MyString&);//重载输出运算符
+};
 
+void work2();
